@@ -1,0 +1,12 @@
+{
+    "file_uris": "./galleries.txt",
+    "dire_download": "./downloads",
+    "conf_pages_limit": 5,
+    "conf_download_limit": 250,
+    "conf_download_twice_gallery": false,
+    "conf_download_twice_file": true,
+    "conf_root_download": true,
+    "conf_override_file": false,
+    "conf_update_file_uris": false,
+    "conf_show_gallery_log": true
+}
