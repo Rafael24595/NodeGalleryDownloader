@@ -12,20 +12,16 @@ export class Log extends AbstractLog{
         super();
     }
 
-    public static async log(message: string, aux?: Auxiliar): Promise<Log>{
-        const config = await ConfigFile.getInstance();
+    public static log(message: string, aux?: Auxiliar): Log{
         const instance = new Log();
-        const messageInstance = Message.buildMessage(message, aux);
-        const fileContent = await instance.buildLogMessage(messageInstance);
+        instance.log(message, aux);
 
-        if(config.canShowConsoleLog())
-            console.log(fileContent);
+        return instance;
+    }
 
-        try {
-            await instance.writeLogSync(fileContent);
-        } catch (error) {
-            console.error(`[FILE-SAVE] Fatal error cannot print: ${messageInstance.getCompleteMessage()}`);
-        }
+    public static async logSync(message: string, aux?: Auxiliar): Promise<Log>{
+        const instance = new Log();
+        await instance.logSync(message, aux);
 
         return instance;
     }

@@ -30,7 +30,7 @@ export class WebMulti extends WebBasic {
         if(nextPageUri && swCanReachNext){
             nextPageUri = uri + nextPageUri;
 
-            await this.log(GalleryMessages.GALEMESS0003, nextPageUri);
+            this.log(GalleryMessages.GALEMESS0003, nextPageUri);
 
             await this.searchImageURIs(nextPageUri);
         }
@@ -46,7 +46,7 @@ export class WebMulti extends WebBasic {
     protected async setGalleryPagesSize(){
         if(this.gallery.getGalleryPagesSize() == 0){
           const galleyPagesSize = await this.driver.getWebGalleryPagesSize(this.getPagePrincipal());
-          console.log(galleyPagesSize)
+
           this.gallery.setGalleryPagesSize(galleyPagesSize);
         }
     }
@@ -57,7 +57,7 @@ export class WebMulti extends WebBasic {
         const swDownloadLimit = this.gallery.getStorageLength() <= config.getDownloadLimit();
 
         if(!swPagesLimit)
-            await this.log(GalleryMessages.GALEMESS0013, await this.gallery.getGalleryName());
+            this.log(GalleryMessages.GALEMESS0013, await this.gallery.getGalleryName());
 
         return swPagesLimit && swDownloadLimit;
     }

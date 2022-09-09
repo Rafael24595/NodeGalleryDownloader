@@ -143,7 +143,7 @@ export class Gallery {
     public async log(message: string, aux?: Auxiliar): Promise<void>{
         const config = await ConfigFile.getInstance()
         if(config.canShowGalleryLog())
-         await this.logGallery.log(message, aux);
+            this.logGallery.log(message, aux, false);
         Log.log(message, aux);
     }
 

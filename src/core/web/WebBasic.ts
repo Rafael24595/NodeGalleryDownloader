@@ -44,7 +44,7 @@ export class WebBasic {
         const linkReference = linkReferences[index];
         imagePointer = imagePointer + 1;
         
-        await this.log(GalleryMessages.GALEMESS0004, [imagePointer, linkReferences.length, this.gallery.getGalleryPagePointer(), this.gallery.getGalleryPagesSize(), linkReference]);
+        this.log(GalleryMessages.GALEMESS0004, [imagePointer, linkReferences.length, this.gallery.getGalleryPagePointer(), this.gallery.getGalleryPagesSize(), linkReference]);
   
         let picsAux = await this.getWebImageSrc(linkReference);
         pics = pics.concat(picsAux);
@@ -62,7 +62,7 @@ export class WebBasic {
     const swLimitExceeded = totalURIs >= config.getDownloadLimit();
     
     if(swLimitExceeded)
-      await this.log(GalleryMessages.GALEMESS0012, await this.gallery.getGalleryName());
+      this.log(GalleryMessages.GALEMESS0012, await this.gallery.getGalleryName());
 
     return swLimitExceeded;
   }
@@ -112,7 +112,7 @@ export class WebBasic {
     if(canDownloadGallery){
       let galleryName = await this.gallery.getGalleryName();
       
-      await this.log(GalleryMessages.GALEMESS0001, galleryName)
+      this.log(GalleryMessages.GALEMESS0001, galleryName)
 
       await this.initializePagePrincipal();
       await this.searchImageURIs();
@@ -120,10 +120,10 @@ export class WebBasic {
 
       this.setGalleryDownloadedState();
 
-      await this.log(GalleryMessages.GALEMESS0006, [this.getDownloadedState(), `${this.gallery.getGallerySize()}`]);
+      this.log(GalleryMessages.GALEMESS0006, [this.getDownloadedState(), `${this.gallery.getGallerySize()}`]);
     }
     else{
-      await this.log(GalleryMessages.GALEMESS0007, await this.gallery.getGalleryName());
+      this.log(GalleryMessages.GALEMESS0007, await this.gallery.getGalleryName());
       this.gallery.StateError();
     }
   }
@@ -161,7 +161,7 @@ export class WebBasic {
       await this.goToURI(uri);
       await this.setGalleryData();
 
-      await this.log(GalleryMessages.GALEMESS0002, [this.gallery.getGalleryPagePointer(), this.gallery.getGalleryPagesSize(), uri]);
+      this.log(GalleryMessages.GALEMESS0002, [this.gallery.getGalleryPagePointer(), this.gallery.getGalleryPagesSize(), uri]);
 
       let newImageURIs = await this.getWebImagesSrc();
       this.gallery.pushImageURIs(newImageURIs);
@@ -196,13 +196,13 @@ export class WebBasic {
     try {
       const filePath = await this.generateDownloadPath(imageUri);
 
-      await this.log(GalleryMessages.GALEMESS0005, filePath);
+      this.log(GalleryMessages.GALEMESS0005, filePath);
       await File.downloadSync(imageUri, filePath);
 
       this.gallery.incrementGallerySize();
     } catch (error: any) {
       this.gallery.pushError(imageUri, error.message);
-      await this.log(error.message);
+      this.log(error.message);
     }
   }
 
@@ -239,7 +239,7 @@ export class WebBasic {
     if(index > 1){
       if(swPathExists && index == 999)
         throw new Exception(GalleryMessages.GALEMESS0010);
-      await this.log(GalleryMessages.GALEMESS0009, [originalPath, filePath]);
+      this.log(GalleryMessages.GALEMESS0009, [originalPath, filePath]);
     }
 
     return filePath;
@@ -258,8 +258,8 @@ export class WebBasic {
     return `${await this.gallery.getGalleryDir()}${fileName}${indexString}.${fileExtension}`;
   }
 
-  protected async log(message: string, aux?: Auxiliar){
-    await this.gallery.log(message, aux);
+  protected log(message: string, aux?: Auxiliar){
+    this.gallery.log(message, aux);
   }
 
 }

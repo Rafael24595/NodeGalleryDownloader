@@ -10,6 +10,10 @@ export class Uri {
         return path.resolve(uri);
     }
 
+    public static dirName(uri: string): string{
+        return path.dirname(uri);
+    }
+
     public static hostName(uri: string): string{
         let url = new URL(uri);
         return url.hostname;

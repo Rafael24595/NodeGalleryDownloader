@@ -42,16 +42,9 @@ class Main {
     }
 
     private static async defineExitBacklog(){
-        process.on("exit", async () => {
-            await this.onExit();
-        });
-        process.on('SIGINT', async () => {
-            await this.onExit();
-        });
-        
-        process.on('uncaughtException', async () => {
-            await this.onExit();
-        });
+        process.on("exit", this.onExit);
+        process.on('SIGINT', this.onExit);
+        process.on('uncaughtException', this.onExit);
     }
 
     private static async onExit(){
@@ -107,7 +100,7 @@ class Main {
         generalMessage += ` -Total downloads: ${downloadCount}\n`;
         generalMessage += ` -Total errors: ${errorCount}\n`;
 
-        await Log.log(Messages.LOGMESSA0002, [galleryMessages, generalMessage]);
+        await Log.logSync(Messages.LOGMESSA0002, [galleryMessages, generalMessage]);
     }
 
     private static async updateURIsFile(){
@@ -123,7 +116,7 @@ class Main {
     
     public static async cleanLogCache(): Promise<void>{
         const config = await ConfigFile.getInstance();
-        const logCacheCount = config.getMaxGeneralLogCachedFiles() + 1;
+        const logCacheCount = config.getMaxGeneralLogCachedFiles();
         const regExpFileName = RegularExpresion.generalLogName();
         let files = await Directory.readDirSync(System.getLogDirectory());
         files = files.filter(file => file.match(regExpFileName));
@@ -132,7 +125,7 @@ class Main {
             const file = files[index];
             const path = Uri.join(System.getLogDirectory(), file);
             await File.removeSync(path);
-            await Log.log(Messages.LOGMESSA0001, path) 
+            Log.log(Messages.LOGMESSA0001, path) 
         }
     }
 
